@@ -64,11 +64,12 @@ nb0_extract="$toolsdir/$HOST/bin/nb0-extract"
 kdz_extract="$toolsdir/KDZFileTools.py"
 dz_extract="$toolsdir/undz.py"
 ruu="$toolsdir/$HOST/bin/RUU_Decrypt_Tool"
+brotli="$toolsdir/$HOST/bin/brotli"
 
 romzip="$(realpath $1)"
 romzipext=${romzip##*.}
-PARTITIONS="system vendor cust odm oem factory product xrom modem dtbo boot tz systemex oppo_product preload_common"
-EXT4PARTITIONS="system vendor cust odm oem factory product xrom systemex oppo_product preload_common"
+PARTITIONS="system vendor cust odm oem factory product xrom modem dtbo boot tz systemex oppo_product preload_common system_ext"
+EXT4PARTITIONS="system vendor cust odm oem factory product xrom systemex oppo_product preload_common system_ext"
 OTHERPARTITIONS="tz.mbn:tz tz.img:tz modem.img:modem NON-HLOS:modem boot-verified.img:boot dtbo-verified.img:dtbo"
 
 echo "Create Temp and out dir"
@@ -165,7 +166,7 @@ if [[ $(7z l -ba $romzip | grep system.new.dat) ]]; then
             fi
             if [[ $(echo "$i" | grep "\.dat\.br") ]]; then
                 echo "Converting brotli $partition dat to normal"
-                brotli -d "$i"
+                $brotli -d "$i"
                 rm -f "$i"
             fi
             echo "Extracting $partition"
